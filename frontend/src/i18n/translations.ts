@@ -1,0 +1,546 @@
+export type LangCode = 'ko' | 'en' | 'ja' | 'zh';
+
+// 언어별 로케일 코드
+export const LOCALE_MAP: Record<LangCode, string> = {
+  ko: 'ko-KR', en: 'en-US', ja: 'ja-JP', zh: 'zh-CN',
+};
+
+export const LANGUAGES: { code: LangCode; label: string; flag: string }[] = [
+  { code: 'ko', label: '한국어',  flag: '🇰🇷' },
+  { code: 'en', label: 'English', flag: '🇺🇸' },
+  { code: 'ja', label: '日本語',  flag: '🇯🇵' },
+  { code: 'zh', label: '中文',    flag: '🇨🇳' },
+];
+
+const T = {
+  // ── 사이드바 ──────────────────────────────────────────────────────
+  sidebarSubtitle: {
+    ko: '국제 사이버 위협\n인텔리전스 플랫폼',
+    en: 'International Cyber\nThreat Intelligence',
+    ja: '国際サイバー脅威\nインテリジェンス',
+    zh: '国际网络威胁\n情报平台',
+  },
+  navDashboard:  { ko: '대시보드',  en: 'Dashboard',      ja: 'ダッシュボード', zh: '仪表板' },
+  navSubmit:     { ko: '위협 입력', en: 'Submit Threat',   ja: '脅威入力',       zh: '提交威胁' },
+  navThreats:    { ko: '위협 관리', en: 'Threats',         ja: '脅威管理',       zh: '威胁管理' },
+  navShare:         { ko: '기관 공유',      en: 'Share',             ja: '機関共有',           zh: '机构共享' },
+  navIntelligence:  { ko: '인텔리전스 허브', en: 'Intelligence Hub',  ja: 'インテリジェンス',    zh: '情报中心' },
+  roleAdmin:     { ko: '관리자',    en: 'Admin',           ja: '管理者',         zh: '管理员' },
+  roleAnalyst:   { ko: '분석가',    en: 'Analyst',         ja: 'アナリスト',     zh: '分析师' },
+  roleViewer:    { ko: '열람자',    en: 'Viewer',          ja: '閲覧者',         zh: '查看者' },
+  logout:        { ko: '로그아웃',  en: 'Logout',          ja: 'ログアウト',     zh: '退出登录' },
+  language:      { ko: '언어',      en: 'Language',        ja: '言語',           zh: '语言' },
+
+  // ── 로그인 ────────────────────────────────────────────────────────
+  loginTitle:    { ko: 'ICTIP 로그인', en: 'ICTIP Login',  ja: 'ICTIPログイン',  zh: 'ICTIP 登录' },
+  loginSubtitle: {
+    ko: '국제 사이버 위협 인텔리전스 플랫폼',
+    en: 'International Cyber Threat Intelligence Platform',
+    ja: '国際サイバー脅威インテリジェンスプラットフォーム',
+    zh: '国际网络威胁情报平台',
+  },
+  loginUsername:  { ko: '사용자 이름', en: 'Username',   ja: 'ユーザー名',   zh: '用户名' },
+  loginPassword:  { ko: '비밀번호',    en: 'Password',   ja: 'パスワード',   zh: '密码' },
+  loginBtn:       { ko: '로그인',      en: 'Login',      ja: 'ログイン',     zh: '登录' },
+  loginLoading:   { ko: '로그인 중...', en: 'Logging in...', ja: 'ログイン中...', zh: '登录中...' },
+  loginDefaultCredentials: {
+    ko: '기본 계정',
+    en: 'Default Credentials',
+    ja: 'デフォルト資格情報',
+    zh: '默认凭据',
+  },
+
+  // ── 대시보드 ──────────────────────────────────────────────────────
+  dashboardTitle: { ko: '대시보드', en: 'Dashboard', ja: 'ダッシュボード', zh: '仪表板' },
+  lastUpdated:    { ko: '마지막 업데이트', en: 'Last Updated', ja: '最終更新', zh: '最后更新' },
+  statThreats:    { ko: '오늘 탐지 위협', en: "Today's Threats", ja: '本日の脅威',   zh: '今日威胁' },
+  statCountries:  { ko: '참여 국가',      en: 'Partner Countries', ja: '参加国',      zh: '参与国家' },
+  statAIRate:     { ko: 'AI 대응률',      en: 'AI Response Rate',  ja: 'AI対応率',    zh: 'AI响应率' },
+  statDetectTime: { ko: '평균 탐지 시간', en: 'Avg. Detection Time', ja: '平均検知時間', zh: '平均检测时间' },
+  newToday:       { ko: '오늘 신규',      en: 'New today',         ja: '本日新規',    zh: '今日新增' },
+  fromYesterday:  { ko: '전일 대비',      en: 'vs yesterday',      ja: '前日比',      zh: '较昨日' },
+  min:            { ko: '분',             en: 'min',               ja: '分',          zh: '分钟' },
+
+  // ── 공통 버튼/상태 ────────────────────────────────────────────────
+  btnNew:         { ko: '+ 새 위협 등록', en: '+ New Threat',  ja: '+ 新規脅威',   zh: '+ 新建威胁' },
+  btnDelete:      { ko: '삭제',           en: 'Delete',        ja: '削除',         zh: '删除' },
+  btnDetail:      { ko: '상세',           en: 'Detail',        ja: '詳細',         zh: '详情' },
+  btnShare:       { ko: '기관 공유',      en: 'Share',         ja: '機関共有',     zh: '共享' },
+  btnAIAnalyze:   { ko: 'AI 분석 실행',   en: 'Run AI Analysis', ja: 'AI分析実行', zh: '运行AI分析' },
+  btnAIReanalyze: { ko: 'AI 재분석',      en: 'Re-analyze',    ja: 'AI再分析',     zh: '重新分析' },
+  btnAIRunning:   { ko: 'AI 분석 중...',  en: 'Analyzing...', ja: 'AI分析中...',   zh: '分析中...' },
+  btnSubmit:      { ko: '제출',           en: 'Submit',        ja: '送信',         zh: '提交' },
+  btnCancel:      { ko: '취소',           en: 'Cancel',        ja: 'キャンセル',   zh: '取消' },
+  btnSearch:      { ko: '검색',           en: 'Search',        ja: '検索',         zh: '搜索' },
+  btnReset:       { ko: '초기화',         en: 'Reset',         ja: 'リセット',     zh: '重置' },
+  btnPrev:        { ko: '이전',           en: 'Prev',          ja: '前へ',         zh: '上一页' },
+  btnNext:        { ko: '다음',           en: 'Next',          ja: '次へ',         zh: '下一页' },
+  loading:        { ko: '로딩 중...',      en: 'Loading...',   ja: '読み込み中...', zh: '加载中...' },
+  noData:         { ko: '데이터 없음',     en: 'No data',      ja: 'データなし',   zh: '暂无数据' },
+  error:          { ko: '오류',           en: 'Error',         ja: 'エラー',       zh: '错误' },
+
+  // ── 심각도 ────────────────────────────────────────────────────────
+  sevCritical: { ko: '긴급', en: 'Critical', ja: '緊急', zh: '紧急' },
+  sevHigh:     { ko: '높음', en: 'High',     ja: '高',   zh: '高' },
+  sevMedium:   { ko: '중간', en: 'Medium',   ja: '中',   zh: '中' },
+  sevLow:      { ko: '낮음', en: 'Low',      ja: '低',   zh: '低' },
+
+  // ── 위협 관리 ─────────────────────────────────────────────────────
+  threatMgmtTitle: { ko: '위협 관리',   en: 'Threat Management', ja: '脅威管理',   zh: '威胁管理' },
+  threatMgmtDesc:  {
+    ko: '등록된 위협 인텔리전스를 조회·수정·삭제합니다.',
+    en: 'Browse, edit, and delete registered threat intelligence.',
+    ja: '登録された脅威インテリジェンスを検索・編集・削除します。',
+    zh: '浏览、编辑和删除已注册的威胁情报。',
+  },
+  searchPlaceholder: { ko: '제목 검색...', en: 'Search title...', ja: 'タイトル検索...', zh: '搜索标题...' },
+  filterSeverity:    { ko: '심각도',       en: 'Severity',        ja: '深刻度',          zh: '严重性' },
+  filterType:        { ko: '유형',         en: 'Type',            ja: '種別',            zh: '类型' },
+  filterAll:         { ko: '전체',         en: 'All',             ja: 'すべて',          zh: '全部' },
+  colTitle:          { ko: '제목',         en: 'Title',           ja: 'タイトル',        zh: '标题' },
+  colType:           { ko: '유형',         en: 'Type',            ja: '種別',            zh: '类型' },
+  colSource:         { ko: '출처',         en: 'Source',          ja: '出典',            zh: '来源' },
+  colDetected:       { ko: '탐지일',       en: 'Detected',        ja: '検知日',          zh: '检测日期' },
+  colActions:        { ko: '작업',         en: 'Actions',         ja: 'アクション',      zh: '操作' },
+  totalCount:        { ko: '건',           en: 'records',         ja: '件',              zh: '条' },
+  page:              { ko: '페이지',       en: 'Page',            ja: 'ページ',          zh: '页' },
+  of:                { ko: '/',            en: 'of',              ja: '/',               zh: '/' },
+  deleteConfirm:     {
+    ko: '이 위협 정보를 삭제하시겠습니까?',
+    en: 'Are you sure you want to delete this threat?',
+    ja: 'この脅威情報を削除しますか？',
+    zh: '确定要删除此威胁信息吗？',
+  },
+  deleting:    { ko: '삭제 중...', en: 'Deleting...', ja: '削除中...', zh: '删除中...' },
+
+  // ── 위협 입력 ─────────────────────────────────────────────────────
+  submitTitle: { ko: '위협 등록',   en: 'Submit Threat',       ja: '脅威登録',       zh: '提交威胁' },
+  submitDesc:  {
+    ko: '새로운 위협 인텔리전스를 등록합니다.',
+    en: 'Register new threat intelligence.',
+    ja: '新しい脅威インテリジェンスを登録します。',
+    zh: '注册新的威胁情报。',
+  },
+  fieldTitle:       { ko: '제목 *',        en: 'Title *',          ja: 'タイトル *',      zh: '标题 *' },
+  fieldSeverity:    { ko: '심각도 *',      en: 'Severity *',       ja: '深刻度 *',        zh: '严重性 *' },
+  fieldType:        { ko: '위협 유형 *',   en: 'Threat Type *',    ja: '脅威種別 *',      zh: '威胁类型 *' },
+  fieldSource:      { ko: '출처 *',        en: 'Source *',         ja: '出典 *',          zh: '来源 *' },
+  fieldIOCValue:    { ko: 'IOC 값',        en: 'IOC Value',        ja: 'IOC値',           zh: 'IOC值' },
+  fieldIOCType:     { ko: 'IOC 유형',      en: 'IOC Type',         ja: 'IOC種別',         zh: 'IOC类型' },
+  fieldCountry:     { ko: '국가 코드',     en: 'Country Code',     ja: '国コード',        zh: '国家代码' },
+  fieldActor:       { ko: '위협 행위자',   en: 'Threat Actor',     ja: '脅威アクター',    zh: '威胁行为者' },
+  fieldIOCCount:    { ko: 'IOC 수',        en: 'IOC Count',        ja: 'IOC数',           zh: 'IOC数量' },
+  fieldDesc:        { ko: '상세 설명',     en: 'Description',      ja: '詳細説明',        zh: '详细描述' },
+  submitting:       { ko: '등록 중...',    en: 'Submitting...',   ja: '登録中...',        zh: '提交中...' },
+  submitSuccess:    { ko: '위협이 성공적으로 등록되었습니다.', en: 'Threat registered successfully.', ja: '脅威が正常に登録されました。', zh: '威胁已成功注册。' },
+
+  // ── 위협 상세 ─────────────────────────────────────────────────────
+  threatDetail:       { ko: '위협 상세 정보',   en: 'Threat Details',      ja: '脅威詳細情報',    zh: '威胁详情' },
+  fieldIOCVal:        { ko: 'IOC 값',           en: 'IOC Value',           ja: 'IOC値',           zh: 'IOC值' },
+  fieldIOCTypeLbl:    { ko: 'IOC 유형',         en: 'IOC Type',            ja: 'IOC種別',         zh: 'IOC类型' },
+  fieldIOCCnt:        { ko: 'IOC 수',           en: 'IOC Count',           ja: 'IOC数',           zh: 'IOC数量' },
+  fieldDescLbl:       { ko: '상세 설명',        en: 'Description',         ja: '詳細説明',        zh: '详细描述' },
+  fieldTypeLbl:       { ko: '유형',             en: 'Type',                ja: '種別',            zh: '类型' },
+  fieldSourceLbl:     { ko: '출처',             en: 'Source',              ja: '出典',            zh: '来源' },
+  fieldActorLbl:      { ko: '행위자',           en: 'Actor',               ja: 'アクター',        zh: '行为者' },
+  fieldCountryLbl:    { ko: '국가',             en: 'Country',             ja: '国',              zh: '国家' },
+  fieldDetected:      { ko: '탐지',             en: 'Detected',            ja: '検知',            zh: '检测' },
+  shareHistory:       { ko: '공유 기록',        en: 'Share History',       ja: '共有履歴',        zh: '共享历史' },
+  noShareHistory:     { ko: '아직 공유된 기록이 없습니다.', en: 'No share history yet.', ja: '共有履歴はありません。', zh: '暂无共享记录。' },
+  aiAnalysis:         { ko: 'AI 분석 결과',     en: 'AI Analysis',         ja: 'AI分析結果',      zh: 'AI分析结果' },
+  aiNotRun:           { ko: 'AI 분석이 아직 실행되지 않았습니다', en: 'AI analysis has not been run yet', ja: 'AI分析はまだ実行されていません', zh: 'AI分析尚未运行' },
+  aiRunHint:          {
+    ko: '위 버튼을 클릭하면 AI가 위협 유형·심각도·IOC를 기반으로 위험도를 분석합니다.',
+    en: 'Click the button above to let AI analyze the threat type, severity, and IOC.',
+    ja: '上のボタンをクリックすると、AIが脅威種別・深刻度・IOCに基づいてリスクを分析します。',
+    zh: '点击上方按钮，AI将基于威胁类型、严重性和IOC进行风险分析。',
+  },
+  aiRiskScore:    { ko: '위험 점수',   en: 'Risk Score',    ja: 'リスクスコア', zh: '风险评分' },
+  aiConfidence:   { ko: '신뢰도',      en: 'Confidence',    ja: '信頼度',       zh: '置信度' },
+  aiAnalyzedAt:   { ko: '분석',        en: 'Analyzed',      ja: '分析日時',     zh: '分析时间' },
+  aiSummary:      { ko: '종합 분석',   en: 'Summary',       ja: '総合分析',     zh: '综合分析' },
+  aiAttackVector: { ko: '공격 벡터',   en: 'Attack Vector', ja: '攻撃ベクター', zh: '攻击向量' },
+  aiTargets:      { ko: '주요 피해 대상', en: 'Target Sectors', ja: '主な被害対象', zh: '主要目标' },
+  aiIOCAnalysis:  { ko: 'IOC 분석',    en: 'IOC Analysis',  ja: 'IOC分析',      zh: 'IOC分析' },
+  aiAttribution:  { ko: '위협 행위자 귀속', en: 'Attribution', ja: '脅威アクター帰属', zh: '威胁归因' },
+  aiRecommend:    { ko: '권고 조치',   en: 'Recommendations', ja: '推奨措置',   zh: '建议措施' },
+  aiFallback:     { ko: '템플릿 분석 (API 오류로 폴백)', en: 'Template Analysis (API Fallback)', ja: 'テンプレート分析 (APIフォールバック)', zh: '模板分析 (API回退)' },
+  aiReal:         { ko: 'Claude AI 실제 분석', en: 'Claude AI Analysis', ja: 'Claude AI実際の分析', zh: 'Claude AI真实分析' },
+
+  // ── 리스크 레벨 ───────────────────────────────────────────────────
+  riskCritical: { ko: '위험', en: 'Critical', ja: '危険', zh: '危险' },
+  riskHigh:     { ko: '경고', en: 'High',     ja: '警告', zh: '警告' },
+  riskMedium:   { ko: '주의', en: 'Medium',   ja: '注意', zh: '注意' },
+  riskInfo:     { ko: '정보', en: 'Info',     ja: '情報', zh: '信息' },
+
+  // ── 기관 공유 ─────────────────────────────────────────────────────
+  shareTitle:       { ko: '기관 공유',         en: 'Share with Agency',     ja: '機関共有',          zh: '机构共享' },
+  shareDesc:        {
+    ko: '위협 인텔리전스를 국제 파트너 기관과 공유합니다.',
+    en: 'Share threat intelligence with international partner agencies.',
+    ja: '脅威インテリジェンスを国際パートナー機関と共有します。',
+    zh: '与国际合作伙伴机构共享威胁情报。',
+  },
+  shareThreatSelect: { ko: '공유할 위협 선택',    en: 'Select Threat to Share',    ja: '共有する脅威を選択',    zh: '选择要共享的威胁' },
+  shareThreatPH:     { ko: '— 위협 선택 —',       en: '— Select a threat —',       ja: '— 脅威を選択 —',       zh: '— 选择威胁 —' },
+  shareFrom:         { ko: '발신 기관',            en: 'From Agency',               ja: '送信機関',             zh: '发送机构' },
+  shareNote:         { ko: '메모 (선택)',           en: 'Note (optional)',            ja: 'メモ (任意)',          zh: '备注（可选）' },
+  shareAgencySelect: { ko: '수신 기관 선택',        en: 'Select Recipient Agencies', ja: '受信機関選択',         zh: '选择接收机构' },
+  shareSelectAll:    { ko: '전체 선택',             en: 'Select All',                ja: '全て選択',             zh: '全选' },
+  shareClearAll:     { ko: '전체 해제',             en: 'Clear All',                 ja: '全て解除',             zh: '全部取消' },
+  shareBtn:          { ko: '위협 정보 공유',         en: 'Share Threat',              ja: '脅威情報を共有',       zh: '共享威胁信息' },
+  shareSending:      { ko: '공유 중...',            en: 'Sharing...',                ja: '共有中...',            zh: '共享中...' },
+  shareSuccess:      { ko: '공유 완료',             en: 'Shared Successfully',       ja: '共有完了',             zh: '共享成功' },
+  shareAgenciesCount: { ko: '개 기관에 공유됨',     en: ' agencies notified',        ja: '機関に共有',           zh: '个机构已通知' },
+  shareStatus:       { ko: '상태',                  en: 'Status',                    zh: '状态',                 ja: 'ステータス' },
+  shareAt:           { ko: '공유 시각',             en: 'Shared At',                 ja: '共有日時',             zh: '共享时间' },
+
+  // ── 패널 제목 ─────────────────────────────────────────────────────
+  panelThreatFeed:     { ko: '실시간 위협 피드',   en: 'Live Threat Feed',         ja: 'リアルタイム脅威フィード', zh: '实时威胁动态' },
+  panelDistribution:   { ko: '위협 유형 분포',     en: 'Threat Distribution',      ja: '脅威種別分布',             zh: '威胁类型分布' },
+  panelEconomic:       { ko: '경제·금융 지표',     en: 'Economic Indicators',      ja: '経済・金融指標',           zh: '经济金融指标' },
+  panelCountryShare:   { ko: '국가별 IOC 공유',    en: 'IOC by Country',           ja: '国別IOC共有',              zh: '按国家IOC共享' },
+  panelAIMetrics:      { ko: 'AI 성능 지표',       en: 'AI Metrics',               ja: 'AI性能指標',               zh: 'AI性能指标' },
+  panelAttackMap:      { ko: '글로벌 공격 발원지 · 지정학적 리스크', en: 'Global Attack Origins · Geopolitical Risk', ja: 'グローバル攻撃発信地・地政学リスク', zh: '全球攻击来源·地缘政治风险' },
+  panelTopAttackers:   { ko: '위험 공격자 TOP 10', en: 'Top 10 Attackers',         ja: '危険攻撃者 TOP 10',        zh: '高危攻击者 TOP 10' },
+  panelGeoPolitical:   { ko: '지정학적 리스크 현황', en: 'Geopolitical Risk',      ja: '地政学リスク状況',         zh: '地缘政治风险' },
+
+  // ── 대시보드 헤더 ─────────────────────────────────────────────────
+  dashboardHeaderTitle: { ko: '실시간 위협 현황',    en: 'Real-time Threat Status',    ja: 'リアルタイム脅威状況',    zh: '实时威胁状态' },
+  wsConnected:          { ko: 'LIVE',                en: 'LIVE',                       ja: 'LIVE',                   zh: 'LIVE' },
+  wsReconnecting:       { ko: '재연결 중',            en: 'Reconnecting',               ja: '再接続中',               zh: '重连中' },
+  secAgo:               { ko: '초 전 업데이트',       en: 'sec ago',                   ja: '秒前更新',               zh: '秒前更新' },
+  dataLoading:          { ko: '데이터 로딩 중...',    en: 'Loading data...',            ja: 'データ読み込み中...',    zh: '数据加载中...' },
+  secRefresh:           { ko: '초 후 갱신',           en: 'sec until refresh',         ja: '秒後に更新',             zh: '秒后刷新' },
+  econSubtitle:         { ko: '실시간 환율 · 암호화폐', en: 'Live Exchange Rates · Crypto', ja: 'リアルタイム為替・仮想通貨', zh: '实时汇率·加密货币' },
+
+  // ── KPI 카드 ──────────────────────────────────────────────────────
+  kpiThreats:     { ko: '오늘 탐지 위협',      en: "Today's Threats",         ja: '本日の脅威検知',          zh: '今日检测威胁' },
+  kpiCountries:   { ko: '참여 국가',            en: 'Partner Countries',       ja: '参加国',                  zh: '参与国家' },
+  kpiAttribution: { ko: '위협 행위자 귀속율',   en: 'Actor Attribution Rate',  ja: '脅威アクター帰属率',      zh: '威胁归因率' },
+  kpiDetectTime:  { ko: '평균 탐지→수집 시간',  en: 'Avg. Detect→Collect',    ja: '平均検知→収集時間',       zh: '平均检测→收集时间' },
+  kpiVsYesterday: { ko: 'vs 어제',              en: 'vs yesterday',            ja: '昨日比',                  zh: '较昨日' },
+  kpiNewCountries:{ ko: '신규',                 en: 'new',                     ja: '新規',                    zh: '新增' },
+  kpiIncrease:    { ko: '증가',                 en: 'increase',                ja: '増加',                    zh: '增加' },
+  kpiDecrease:    { ko: '단축',                 en: 'decrease',                ja: '短縮',                    zh: '减少' },
+  hour:           { ko: '시간',                 en: 'hr',                      ja: '時間',                    zh: '小时' },
+  nation:         { ko: '개국',                 en: ' countries',              ja: 'か国',                    zh: '个国家' },
+
+  // ── AIMetricsPanel ────────────────────────────────────────────────
+  platformMetricsTitle: { ko: '플랫폼 운영 지표',    en: 'Platform Metrics',          ja: 'プラットフォーム指標',    zh: '平台运营指标' },
+  hourlyRefresh:        { ko: '1시간 갱신',          en: 'Hourly refresh',            ja: '1時間ごと更新',           zh: '每小时更新' },
+  aggregatedAt:         { ko: '집계',               en: 'aggregated',                ja: '集計',                    zh: '统计' },
+  totalThreats:         { ko: '누적 수집 위협',      en: 'Total Threats',             ja: '累積収集脅威',            zh: '累计威胁' },
+  highRiskRate:         { ko: '고위험 위협 비율',    en: 'High Risk Rate',            ja: '高リスク脅威率',          zh: '高危威胁比率' },
+  actorAttribution:     { ko: '행위자 귀속율',       en: 'Actor Attribution',         ja: 'アクター帰属率',          zh: '行为者归因率' },
+  activeSources:        { ko: '활성 피드 소스',      en: 'Active Sources',            ja: 'アクティブソース',        zh: '活跃数据源' },
+  todayNewIOC:          { ko: '오늘 신규 IOC',       en: "Today's New IOC",           ja: '本日新規IOC',             zh: '今日新增IOC' },
+  avgDetectLag:         { ko: '평균 탐지 지연',      en: 'Avg. Detect Lag',           ja: '平均検知遅延',            zh: '平均检测延迟' },
+  activeActorTags:      { ko: '활성 위협 행위자 태그', en: 'Active Threat Actor Tags', ja: 'アクティブ脅威アクタータグ', zh: '活跃威胁行为者标签' },
+  collectingData:       { ko: '데이터 수집 중...',   en: 'Collecting data...',        ja: 'データ収集中...',         zh: '数据收集中...' },
+  countUnit:            { ko: '건',                 en: '',                          ja: '件',                      zh: '条' },
+  sourceUnit:           { ko: '개',                 en: '',                          ja: '個',                      zh: '个' },
+
+  // ── CountrySharePanel ─────────────────────────────────────────────
+  countryShareTitle:    { ko: '공유 참여 현황 (상위 국가)', en: 'IOC Sharing by Country (Top 5)', ja: '共有参加状況 (上位国)', zh: 'IOC共享排名 (前5国)' },
+  countryChartTooltip:  { ko: 'IOC 공유',           en: 'IOC Shared',                ja: 'IOC共有',                 zh: 'IOC共享' },
+  countryChartFootnote: { ko: '오늘 공유된 IOC 수 (단위: 건)', en: "Today's shared IOC count", ja: '本日共有IOC数', zh: '今日共享IOC数量' },
+
+  // ── ThreatFeedPanel ───────────────────────────────────────────────
+  feedTitle:      { ko: '실시간 위협 피드',     en: 'Live Threat Feed',          ja: 'リアルタイム脅威フィード', zh: '实时威胁动态' },
+  feedCollecting: { ko: '위협 데이터 수집 중...', en: 'Collecting threat data...', ja: '脅威データ収集中...',     zh: '正在收集威胁数据...' },
+  feedCount:      { ko: '건',                  en: 'feeds',                     ja: '件',                      zh: '条' },
+
+  // ── ThreatDistributionPanel ───────────────────────────────────────
+  distTitle: { ko: '위협 유형 분포', en: 'Threat Distribution', ja: '脅威種別分布', zh: '威胁类型分布' },
+
+  // ── TopAttackersPanel ─────────────────────────────────────────────
+  topAttackersTitle:    { ko: '위험 공격자 TOP',  en: 'Top Attackers',           ja: '危険攻撃者 TOP',          zh: '高危攻击者 TOP' },
+  topAttackersSubtitle: { ko: '공격 빈도 기준',  en: 'by attack frequency',     ja: '攻撃頻度基準',            zh: '按攻击频率' },
+  topAttackersEmpty:    { ko: '공격자 IP 데이터 없음', en: 'No attacker IP data', ja: '攻撃者IPデータなし',     zh: '暂无攻击者IP数据' },
+  attackUnit:           { ko: '건',             en: '',                          ja: '件',                      zh: '次' },
+
+  // ── GeoPoliticalPanel ─────────────────────────────────────────────
+  geoPanelTitle:    { ko: '지정학적 리스크 지수',        en: 'Geopolitical Risk Index',       ja: '地政学リスク指数',        zh: '地缘政治风险指数' },
+  geoPanelSubtitle: { ko: '국가별 사이버 위협 환경 평가', en: 'Cyber threat environment by country', ja: '国別サイバー脅威環境評価', zh: '按国家评估网络威胁环境' },
+
+  // ── AttackMapPanel ────────────────────────────────────────────────
+  ampTitle:        { ko: '글로벌 공격 발원지 · 지정학적 리스크', en: 'Global Attack Origins · Geopolitical Risk', ja: 'グローバル攻撃発信地・地政学リスク', zh: '全球攻击来源·地缘政治风险' },
+  ampTotal:        { ko: '건 탐지',              en: 'detected',                  ja: '件検知',                  zh: '条检测' },
+  ampPartner:      { ko: '플랫폼 파트너',        en: 'Platform Partner',          ja: 'プラットフォームパートナー', zh: '平台合作伙伴' },
+  ampAttack:       { ko: '공격',                 en: 'Attacks',                   ja: '攻撃',                    zh: '攻击' },
+  ampRisk:         { ko: '리스크',               en: 'Risk',                      ja: 'リスク',                  zh: '风险' },
+  ampLegendVeryHigh: { ko: '극위험 (90+)',       en: 'Extreme (90+)',             ja: '極危険 (90+)',             zh: '极危险 (90+)' },
+  ampLegendHigh:   { ko: '긴급 (80+)',           en: 'Critical (80+)',            ja: '緊急 (80+)',               zh: '紧急 (80+)' },
+  ampLegendMedium: { ko: '높음 (70+)',           en: 'High (70+)',                ja: '高 (70+)',                 zh: '高 (70+)' },
+  ampLegendPartner:{ ko: '파트너 국가',          en: 'Partner Countries',         ja: 'パートナー国',             zh: '合作伙伴国家' },
+
+  // ── 패널 내부 텍스트 ──────────────────────────────────────────────
+  liveNow:         { ko: 'LIVE',     en: 'LIVE',     ja: 'LIVE',     zh: 'LIVE' },
+  iocCount:        { ko: 'IOC',      en: 'IOC',      ja: 'IOC',      zh: 'IOC' },
+  attackCount:     { ko: '공격',     en: 'Attacks',  ja: '攻撃',     zh: '攻击' },
+  riskScore:       { ko: '리스크',   en: 'Risk',     ja: 'リスク',   zh: '风险' },
+  trend:           { ko: '추세',     en: 'Trend',    ja: 'トレンド', zh: '趋势' },
+  trendUp:         { ko: '상승',     en: '↑ Rising', ja: '↑ 上昇',  zh: '↑ 上升' },
+  trendDown:       { ko: '하락',     en: '↓ Falling',ja: '↓ 下降',  zh: '↓ 下降' },
+  trendStable:     { ko: '안정',     en: '─ Stable', ja: '─ 安定',  zh: '─ 稳定' },
+  partnerCountry:  { ko: '플랫폼 파트너', en: 'Platform Partner', ja: 'プラットフォームパートナー', zh: '平台合作伙伴' },
+  totalDetected:   { ko: '건 탐지',  en: 'detected', ja: '件検知',  zh: '条检测' },
+  forexRate:       { ko: '환율 (USD 기준)', en: 'Exchange Rate (USD)', ja: '為替レート (USD)', zh: '汇率 (USD基准)' },
+  crypto:          { ko: '암호화폐', en: 'Cryptocurrency', ja: '暗号通貨', zh: '加密货币' },
+  rateSource:      {
+    ko: '※ 환율: Frankfurter API · 암호화폐: CoinGecko · 24h 변동 기준',
+    en: '※ Forex: Frankfurter API · Crypto: CoinGecko · 24h change',
+    ja: '※ 為替: Frankfurter API · 暗号通貨: CoinGecko · 24h変動基準',
+    zh: '※ 汇率: Frankfurter API · 加密: CoinGecko · 24小时变动',
+  },
+  detectionAccuracy: { ko: '탐지 정확도', en: 'Detection Accuracy', ja: '検知精度',       zh: '检测准确率' },
+  falsePositive:     { ko: '오탐율',      en: 'False Positive Rate',ja: '誤検知率',       zh: '误报率' },
+  classifyTime:      { ko: '분류 시간',   en: 'Classification Time',ja: '分類時間',       zh: '分类时间' },
+  attributionAcc:    { ko: '귀속 정확도', en: 'Attribution Accuracy',ja: '帰属精度',      zh: '归因准确率' },
+  activeThreats:     { ko: '활성 위협',   en: 'Active Threats',     ja: 'アクティブ脅威', zh: '活跃威胁' },
+  threatActors:      { ko: '위협 행위자', en: 'Threat Actors',      ja: '脅威アクター',   zh: '威胁行为者' },
+  sec:               { ko: '초',          en: 'sec',                ja: '秒',              zh: '秒' },
+
+  // ── TLP 설명 ─────────────────────────────────────────────────────────────
+  tlpWhiteDesc: { ko: '제한 없음 · 전체 공유 가능', en: 'No restriction · Freely shareable', ja: '制限なし · 全体共有可', zh: '无限制 · 可公开共享' },
+  tlpGreenDesc: { ko: '커뮤니티 내 · 파트너 전체', en: 'Community · All partners', ja: 'コミュニティ · パートナー全体', zh: '社区内 · 全部合作伙伴' },
+  tlpAmberDesc: { ko: 'CERT/GOV 기관만', en: 'CERT/GOV agencies only', ja: 'CERT/GOV機関のみ', zh: '仅限CERT/GOV机构' },
+  tlpRedDesc:   { ko: 'CERT만 · 재배포 금지', en: 'CERT only · No redistribution', ja: 'CERTのみ · 再配布禁止', zh: '仅限CERT · 禁止转发' },
+
+  // ── ThreatDetailPage 추가 ─────────────────────────────────────────────────
+  autoResponseHistory: { ko: '자동 대응 이력', en: 'Auto Response History', ja: '自動対応履歴', zh: '自动响应历史' },
+  autoAnalyze:         { ko: 'AI 자동 분석',   en: 'AI Auto Analysis',      ja: 'AI自動分析',   zh: 'AI自动分析' },
+  iocBlockRule:        { ko: 'IOC 차단 규칙 생성', en: 'IOC Block Rule',     ja: 'IOCブロックルール生成', zh: 'IOC阻断规则' },
+  escalate:            { ko: '에스컬레이션 권고', en: 'Escalation',           ja: 'エスカレーション勧告', zh: '上报建议' },
+  autoShareRecommend:  { ko: '공유 권고/실행',   en: 'Share Recommend',       ja: '共有勧告/実行',  zh: '共享建议/执行' },
+  statusDone:          { ko: '완료',            en: 'Done',                  ja: '完了',           zh: '完成' },
+  statusFail:          { ko: '실패',            en: 'Failed',                ja: '失敗',           zh: '失败' },
+  confirmedAt:         { ko: '확인',            en: 'Confirmed',             ja: '確認',           zh: '确认' },
+  cannotLoadThreat:    { ko: '위협 정보를 불러올 수 없습니다.', en: 'Cannot load threat information.', ja: '脅威情報を読み込めません。', zh: '无法加载威胁信息。' },
+  aiAnalysisError:     { ko: 'AI 분석 중 오류가 발생했습니다.', en: 'An error occurred during AI analysis.', ja: 'AI分析中にエラーが発生しました。', zh: 'AI分析过程中出现错误。' },
+  aiBadge:             { ko: 'AI 분석',         en: 'AI Analysis',           ja: 'AI分析',         zh: 'AI分析' },
+
+  // ── ThreatManagePage 추가 ─────────────────────────────────────────────────
+  tabFeeds:            { ko: '수집 피드',        en: 'Collected Feeds',       ja: '収集フィード',   zh: '收集动态' },
+  tabThreatDB:         { ko: '위협 DB',          en: 'Threat DB',             ja: '脅威DB',         zh: '威胁DB' },
+  recordsUnit:         { ko: '건',               en: '',                      ja: '件',             zh: '条' },
+  allSources:          { ko: '전체 소스',         en: 'All Sources',           ja: '全ソース',       zh: '全部来源' },
+  deleteError:         { ko: '삭제 중 오류',      en: 'Delete error',          ja: '削除エラー',     zh: '删除错误' },
+  iocType:             { ko: 'IOC 유형',          en: 'IOC Type',              ja: 'IOC種別',        zh: 'IOC类型' },
+
+  // ── ThreatSubmitPage 추가 ─────────────────────────────────────────────────
+  sectionBasicInfo:    { ko: '기본 정보',          en: 'Basic Information',     ja: '基本情報',       zh: '基本信息' },
+  sectionIOC:          { ko: 'IOC (침해지표)',      en: 'IOC (Indicators)',      ja: 'IOC（侵害指標）', zh: 'IOC（入侵指标）' },
+  sectionAttribution:  { ko: '귀속 및 출처 정보',  en: 'Attribution & Source',  ja: '帰属・出典情報', zh: '归因与来源' },
+  sectionDescription:  { ko: '상세 설명',          en: 'Description',           ja: '詳細説明',       zh: '详细说明' },
+  fieldTLPLevel:       { ko: '🚦 TLP 등급',        en: '🚦 TLP Level',          ja: '🚦 TLPレベル',   zh: '🚦 TLP等级' },
+  fieldThreatDesc:     { ko: '위협 설명',           en: 'Threat Description',    ja: '脅威説明',       zh: '威胁说明' },
+  unknownCountry:      { ko: '알 수 없음',          en: 'Unknown',               ja: '不明',           zh: '未知' },
+  titleRequired:       { ko: '위협 제목을 입력해주세요.', en: 'Please enter a threat title.', ja: '脅威タイトルを入力してください。', zh: '请输入威胁标题。' },
+  submitError:         { ko: '등록 중 오류가 발생했습니다.', en: 'An error occurred during submission.', ja: '登録中にエラーが発生しました。', zh: '提交过程中出现错误。' },
+  submitSuccessMsg:    { ko: '이(가) 등록되었습니다.', en: 'has been registered.', ja: 'が登録されました。', zh: '已注册。' },
+  titlePlaceholder:    { ko: '예: APT41 — 에너지 인프라 대상 스피어피싱', en: 'e.g. APT41 — Spearphishing targeting energy infrastructure', ja: '例: APT41 — エネルギーインフラ向けスピアフィッシング', zh: '例: APT41 — 针对能源基础设施的鱼叉式网络钓鱼' },
+  actorPlaceholder:    { ko: '예: APT28, Lazarus, LockBit ...', en: 'e.g. APT28, Lazarus, LockBit ...', ja: '例: APT28, Lazarus, LockBit ...', zh: '例: APT28, Lazarus, LockBit ...' },
+  descPlaceholder:     { ko: '공격 방식, 피해 현황, 관련 취약점, 권고 사항 등을 입력하세요...', en: 'Enter attack methods, damage status, related vulnerabilities, recommendations...', ja: '攻撃方法、被害状況、関連する脆弱性、推奨事項などを入力してください...', zh: '请输入攻击方式、损害情况、相关漏洞、建议措施等...' },
+
+  // ── SharePage 추가 ─────────────────────────────────────────────────────────
+  tlpLevelLabel:       { ko: '🚦 TLP 등급',       en: '🚦 TLP Level',          ja: '🚦 TLPレベル',   zh: '🚦 TLP等级' },
+  agencySelected:      { ko: '✓ 선택됨',           en: '✓ Selected',            ja: '✓ 選択済み',     zh: '✓ 已选择' },
+  agencyCERT:          { ko: 'CERT',               en: 'CERT',                  ja: 'CERT',           zh: 'CERT' },
+  agencyGOV:           { ko: '정부',               en: 'Government',            ja: '政府',           zh: '政府' },
+  agencyMIL:           { ko: '군',                 en: 'Military',              ja: '軍',             zh: '军队' },
+  agencyISP:           { ko: 'ISP',                en: 'ISP',                   ja: 'ISP',            zh: 'ISP' },
+  agencyINT:           { ko: '국제기구',           en: 'Int\'l Org',            ja: '国際機関',       zh: '国际组织' },
+  corrExchangeRate:    { ko: '환율',               en: 'Exchange',              ja: '為替',           zh: '汇率' },
+  shareErrorNoThreat:  { ko: '공유할 위협을 선택해주세요.', en: 'Please select a threat to share.', ja: '共有する脅威を選択してください。', zh: '请选择要共享的威胁。' },
+  shareErrorNoAgency:  { ko: '수신 기관을 하나 이상 선택해주세요.', en: 'Please select at least one recipient agency.', ja: '少なくとも1つの受信機関を選択してください。', zh: '请至少选择一个接收机构。' },
+  shareError:          { ko: '공유 중 오류가 발생했습니다.', en: 'An error occurred while sharing.', ja: '共有中にエラーが発生しました。', zh: '共享过程中出现错误。' },
+
+  // ── IntelligencePage 추가 ─────────────────────────────────────────────────
+  intelPageTitle:      { ko: '🧠 인텔리전스 허브', en: '🧠 Intelligence Hub',   ja: '🧠 インテリジェンスハブ', zh: '🧠 情报中心' },
+  intelPageDesc:       {
+    ko: '위협 예측 · IOC 관계 그래프 · 보안 규칙 · 보고서 · SIEM 연동 · 다크웹 모니터링',
+    en: 'Threat Forecast · IOC Graph · Security Rules · Reports · SIEM · Darkweb',
+    ja: '脅威予測 · IOCグラフ · セキュリティルール · レポート · SIEM · ダークウェブ',
+    zh: '威胁预测 · IOC关系图 · 安全规则 · 报告 · SIEM集成 · 暗网监控',
+  },
+  tabTrend:            { ko: '위협 트렌드 예측',   en: 'Threat Trend Forecast',  ja: '脅威トレンド予測', zh: '威胁趋势预测' },
+  tabGraph:            { ko: 'IOC 관계 그래프',    en: 'IOC Relationship Graph',  ja: 'IOC関係グラフ',   zh: 'IOC关系图' },
+  tabRules:            { ko: 'YARA / Sigma 룰',    en: 'YARA / Sigma Rules',      ja: 'YARA / Sigma ルール', zh: 'YARA / Sigma 规则' },
+  tabReport:           { ko: 'PDF 보고서',          en: 'PDF Report',              ja: 'PDFレポート',     zh: 'PDF报告' },
+  tabSIEM:             { ko: 'SIEM 연동',           en: 'SIEM Integration',        ja: 'SIEM連携',        zh: 'SIEM集成' },
+  tabDarkweb:          { ko: '다크웹 모니터링',     en: 'Darkweb Monitoring',       ja: 'ダークウェブ監視', zh: '暗网监控' },
+
+  // TrendTab
+  trendAnalyzing:      { ko: '📊 데이터 분석 중...', en: '📊 Analyzing data...', ja: '📊 データ分析中...', zh: '📊 数据分析中...' },
+  trendTitle30d:       { ko: '📈 최근 30일 위협 추세', en: '📈 30-Day Threat Trend', ja: '📈 直近30日の脅威推移', zh: '📈 近30天威胁趋势' },
+  trendTotalThreats:   { ko: '총 위협',             en: 'Total Threats',          ja: '総脅威',          zh: '总威胁' },
+  trendPeriod:         { ko: '기간',                en: 'Period',                 ja: '期間',            zh: '期间' },
+  trendDailyAvg:       { ko: '일평균',              en: 'Daily Avg.',             ja: '日平均',          zh: '日均' },
+  trendDayUnit:        { ko: '일',                  en: 'days',                   ja: '日',              zh: '天' },
+  forecastTitle:       { ko: '🔮 향후 7일 예측',    en: '🔮 7-Day Forecast',       ja: '🔮 今後7日間予測', zh: '🔮 未来7天预测' },
+  forecastBaseAvg:     { ko: '기준 일평균',         en: 'Base Daily Avg.',        ja: '基準日平均',      zh: '基准日均' },
+  forecastMethod:      { ko: '예측 방법',           en: 'Method',                 ja: '予測方法',        zh: '预测方法' },
+  forecastMethodName:  { ko: '이동평균',            en: 'Moving Average',         ja: '移動平均',        zh: '移动平均' },
+  hotspotTitle:        { ko: '🔥 위협 유형 핫스팟', en: '🔥 Threat Type Hotspot', ja: '🔥 脅威タイプホットスポット', zh: '🔥 威胁类型热点' },
+  hotspotNoData:       { ko: '위협 데이터 수집 중... (5분 주기 피드 수집 후 업데이트)', en: 'Collecting threat data... (updated after 5-min feed cycle)', ja: '脅威データ収集中... (5分ごとのフィード収集後に更新)', zh: '威胁数据收集中...（5分钟周期收集后更新）' },
+  weeklyPatternTitle:  { ko: '📅 요일별 위협 발생 패턴', en: '📅 Weekly Threat Pattern', ja: '📅 曜日別脅威発生パターン', zh: '📅 每周威胁发生模式' },
+  weeklyPatternNoData: { ko: '데이터 집계 중...', en: 'Aggregating data...', ja: 'データ集計中...', zh: '数据统计中...' },
+  actorActivityTitle:  { ko: '👤 위협 행위자 활동', en: '👤 Threat Actor Activity', ja: '👤 脅威アクター活動', zh: '👤 威胁行为者活动' },
+  actorActivityNoData: { ko: '행위자 데이터 수집 중... (피드 수집 후 업데이트)', en: 'Collecting actor data... (updated after feed collection)', ja: 'アクターデータ収集中... (フィード収集後に更新)', zh: '行为者数据收集中...（收集后更新）' },
+
+  // GraphTab
+  graphOverview:       { ko: '전체 개요',          en: 'Overview',               ja: '全体概要',        zh: '整体概览' },
+  graphThreatId:       { ko: '위협 ID',             en: 'Threat ID',              ja: '脅威ID',          zh: '威胁ID' },
+  graphActor:          { ko: '행위자',              en: 'Actor',                  ja: 'アクター',        zh: '行为者' },
+  graphAnalyzing:      { ko: '분석 중…',            en: 'Analyzing…',             ja: '分析中…',         zh: '分析中…' },
+  graphQuery:          { ko: '그래프 조회',          en: 'Query Graph',             ja: 'グラフ照会',      zh: '查询图谱' },
+  graphReset:          { ko: '뷰 초기화',            en: 'Reset View',             ja: 'ビューリセット',  zh: '重置视图' },
+  graphNodes:          { ko: '노드',                en: 'Nodes',                  ja: 'ノード',          zh: '节点' },
+  graphEdges:          { ko: '엣지',                en: 'Edges',                  ja: 'エッジ',          zh: '边' },
+  graphScrollHint:     { ko: '스크롤: 줌 · 드래그: 이동', en: 'Scroll: zoom · Drag: pan', ja: 'スクロール: ズーム · ドラッグ: 移動', zh: '滚动: 缩放 · 拖动: 平移' },
+  graphConnections:    { ko: '연결',                en: 'connections',            ja: '接続',            zh: '连接' },
+  graphLoading:        { ko: '그래프 분석 중...',    en: 'Analyzing graph...',     ja: 'グラフ分析中...', zh: '图谱分析中...' },
+  graphNoData:         { ko: '관계 데이터가 없습니다.', en: 'No relationship data.', ja: '関係データがありません。', zh: '无关系数据。' },
+  nodeTypeThreat:      { ko: '위협',                en: 'Threat',                 ja: '脅威',            zh: '威胁' },
+  nodeTypeActor:       { ko: '행위자',              en: 'Actor',                  ja: 'アクター',        zh: '行为者' },
+  nodeTypeCampaign:    { ko: '캠페인',              en: 'Campaign',               ja: 'キャンペーン',    zh: '活动' },
+
+  // RulesTab
+  rulesTitle:          { ko: '📋 보안 탐지 규칙 자동 생성', en: '📋 Auto-generate Security Rules', ja: '📋 セキュリティ検知ルール自動生成', zh: '📋 自动生成安全检测规则' },
+  rulesDesc:           { ko: '위협 IOC 데이터를 기반으로 YARA 룰(악성코드 탐지)과 Sigma 룰(SIEM 탐지)을 자동 생성합니다.', en: 'Automatically generate YARA rules (malware detection) and Sigma rules (SIEM detection) based on threat IOC data.', ja: '脅威IOCデータに基づき、YARAルール（マルウェア検知）とSigmaルール（SIEM検知）を自動生成します。', zh: '基于威胁IOC数据自动生成YARA规则（恶意软件检测）和Sigma规则（SIEM检测）。' },
+  rulesThreatIdPH:     { ko: '위협 ID 입력',         en: 'Enter Threat ID',        ja: '脅威IDを入力',    zh: '输入威胁ID' },
+  rulesGenerating:     { ko: '생성 중...',            en: 'Generating...',          ja: '生成中...',       zh: '生成中...' },
+  rulesGenerate:       { ko: '룰 생성',              en: 'Generate Rules',          ja: 'ルール生成',      zh: '生成规则' },
+  rulesCopy:           { ko: '복사',                 en: 'Copy',                   ja: 'コピー',          zh: '复制' },
+  rulesDownload:       { ko: '다운로드',             en: 'Download',               ja: 'ダウンロード',     zh: '下载' },
+  rulesCopied:         { ko: '클립보드에 복사되었습니다.', en: 'Copied to clipboard.', ja: 'クリップボードにコピーしました。', zh: '已复制到剪贴板。' },
+  rulesGenerateError:  { ko: '룰 생성 실패',          en: 'Rule generation failed',  ja: 'ルール生成失敗',  zh: '规则生成失败' },
+  rulesGeneratedAt:    { ko: '생성 시각',             en: 'Generated at',            ja: '生成日時',        zh: '生成时间' },
+
+  // ReportTab
+  reportDailyTitle:    { ko: '📄 일간 위협 요약 보고서', en: '📄 Daily Threat Summary Report', ja: '📄 日次脅威サマリーレポート', zh: '📄 每日威胁摘要报告' },
+  reportDailyDesc:     { ko: '오늘 수집된 위협 통계, 심각도 분포, 주요 행위자, 위협 유형 분포를 포함한 일간 보고서를 PDF로 생성합니다.', en: 'Generate a daily PDF report including today\'s threat statistics, severity distribution, key actors, and threat type distribution.', ja: '本日収集された脅威統計、深刻度分布、主要アクター、脅威タイプ分布を含む日次レポートをPDFで生成します。', zh: '生成包含今日威胁统计、严重性分布、主要行为者和威胁类型分布的每日PDF报告。' },
+  reportDetailTitle:   { ko: '📄 위협 상세 보고서',    en: '📄 Threat Detail Report',  ja: '📄 脅威詳細レポート', zh: '📄 威胁详情报告' },
+  reportDetailDesc:    { ko: '특정 위협의 IOC, MITRE ATT&CK 매핑, AI 분석 결과, TLP 등급, 공유 이력을 포함한 상세 보고서를 생성합니다.', en: 'Generate a detailed report including IOC, MITRE ATT&CK mapping, AI analysis, TLP level, and share history for a specific threat.', ja: '特定の脅威のIOC、MITRE ATT&CKマッピング、AI分析結果、TLPレベル、共有履歴を含む詳細レポートを生成します。', zh: '生成包含特定威胁的IOC、MITRE ATT&CK映射、AI分析结果、TLP等级和共享历史的详细报告。' },
+  reportGenerating:    { ko: '⏳ 생성 중...',          en: '⏳ Generating...',        ja: '⏳ 生成中...',     zh: '⏳ 生成中...' },
+  reportDownloadDaily: { ko: '📥 일간 보고서 다운로드', en: '📥 Download Daily Report', ja: '📥 日次レポートダウンロード', zh: '📥 下载每日报告' },
+  reportDownload:      { ko: '📥 다운로드',           en: '📥 Download',             ja: '📥 ダウンロード',  zh: '📥 下载' },
+  reportThreatIdPH:    { ko: '위협 ID 입력',           en: 'Enter Threat ID',         ja: '脅威IDを入力',    zh: '输入威胁ID' },
+  reportError:         { ko: '보고서 생성 실패',        en: 'Report generation failed', ja: 'レポート生成失敗', zh: '报告生成失败' },
+
+  // SIEM Tab
+  siemWebhookTitle:    { ko: '🔗 SIEM Webhook 설정', en: '🔗 SIEM Webhook Setup', ja: '🔗 SIEM Webhook設定', zh: '🔗 SIEM Webhook配置' },
+  siemWebhookDesc:     { ko: 'Splunk HEC, Elastic, QRadar 등 Webhook URL로 위협 데이터를 전송합니다.', en: 'Send threat data to Splunk HEC, Elastic, QRadar etc. via Webhook URL.', ja: 'Splunk HEC、Elastic、QRadarなどのWebhook URLに脅威データを送信します。', zh: '通过Webhook URL将威胁数据发送到Splunk HEC、Elastic、QRadar等。' },
+  siemFormat:          { ko: '전송 포맷',             en: 'Send Format',            ja: '送信フォーマット', zh: '发送格式' },
+  siemTesting:         { ko: '⏳ 테스트 중...',        en: '⏳ Testing...',           ja: '⏳ テスト中...',   zh: '⏳ 测试中...' },
+  siemTest:            { ko: '🧪 연결 테스트',         en: '🧪 Connection Test',      ja: '🧪 接続テスト',   zh: '🧪 连接测试' },
+  siemThreatId:        { ko: '위협 ID (특정 위협 전송)', en: 'Threat ID (specific threat)', ja: '脅威ID（特定脅威送信）', zh: '威胁ID（发送特定威胁）' },
+  siemSending:         { ko: '⏳ 전송 중',            en: '⏳ Sending',              ja: '⏳ 送信中',        zh: '⏳ 发送中' },
+  siemSend:            { ko: '📤 전송',               en: '📤 Send',                 ja: '📤 送信',          zh: '📤 发送' },
+  siemHistoryTitle:    { ko: '📋 전송 이력',           en: '📋 Send History',         ja: '📋 送信履歴',      zh: '📋 发送历史' },
+  siemNoHistory:       { ko: '전송 이력이 없습니다.',   en: 'No send history.',        ja: '送信履歴はありません。', zh: '暂无发送历史。' },
+  siemGuideTitle:      { ko: '📘 통합 가이드',         en: '📘 Integration Guide',    ja: '📘 統合ガイド',    zh: '📘 集成指南' },
+  siemFormat2:         { ko: '포맷',                  en: 'Format',                  ja: 'フォーマット',    zh: '格式' },
+  siemTestResult:      { ko: '테스트 결과',            en: 'Test result',             ja: 'テスト結果',      zh: '测试结果' },
+  siemSendResult:      { ko: '전송 결과',             en: 'Send result',             ja: '送信結果',        zh: '发送结果' },
+
+  // DarkwebTab
+  darkwebTitle:        { ko: '다크웹 위협 인텔리전스', en: 'Darkweb Threat Intelligence', ja: 'ダークウェブ脅威インテリジェンス', zh: '暗网威胁情报' },
+  darkwebOSINT:        { ko: 'OSINT 기반',            en: 'OSINT Based',            ja: 'OsINTベース',     zh: '基于OSINT' },
+  darkwebDesc:         { ko: 'Ahmia.fi (Tor 인덱서) + Have I Been Pwned API를 통해 공개된 다크웹 언급 및 데이터 유출 현황을 모니터링합니다.', en: 'Monitor darkweb mentions and data breaches via Ahmia.fi (Tor indexer) + Have I Been Pwned API.', ja: 'Ahmia.fi（Torインデクサー）+ Have I Been Pwned APIを通じて、公開されたダークウェブの言及とデータ漏洩状況を監視します。', zh: '通过Ahmia.fi（Tor索引器）+ Have I Been Pwned API监控公开的暗网提及和数据泄露情况。' },
+  darkwebMonitorTitle: { ko: '🔍 키워드 모니터링 현황', en: '🔍 Keyword Monitoring', ja: '🔍 キーワード監視状況', zh: '🔍 关键词监控状态' },
+  darkwebBreachTitle:  { ko: '🔓 최근 데이터 유출 (HIBP)', en: '🔓 Recent Breaches (HIBP)', ja: '🔓 最近のデータ漏洩 (HIBP)', zh: '🔓 近期数据泄露 (HIBP)' },
+  darkwebNoMonitor:    { ko: '모니터링 데이터 없음 (API 제한 가능)', en: 'No monitoring data (API limit possible)', ja: '監視データなし（API制限の可能性）', zh: '无监控数据（可能受API限制）' },
+  darkwebNoBreach:     { ko: '유출 데이터 없음',       en: 'No breach data',         ja: '漏洩データなし',  zh: '无泄露数据' },
+  darkwebSearchTitle:  { ko: '🔎 다크웹 키워드 검색 (Ahmia)', en: '🔎 Darkweb Keyword Search (Ahmia)', ja: '🔎 ダークウェブキーワード検索 (Ahmia)', zh: '🔎 暗网关键词搜索 (Ahmia)' },
+  darkwebSearchPH:     { ko: '검색어 입력 (예: ransomware, APT41, korean...)', en: 'Enter keyword (e.g. ransomware, APT41, korean...)', ja: 'キーワードを入力 (例: ransomware, APT41, korean...)', zh: '输入关键词 (例: ransomware, APT41, korean...)' },
+  darkwebSearching:    { ko: '검색 중...',             en: 'Searching...',            ja: '検索中...',       zh: '搜索中...' },
+  darkwebSearch:       { ko: '검색',                  en: 'Search',                  ja: '検索',            zh: '搜索' },
+  darkwebNoTitle:      { ko: '(제목 없음)',            en: '(No title)',              ja: '（タイトルなし）', zh: '（无标题）' },
+  darkwebNoResult:     { ko: '검색 결과 없음',         en: 'No search results',       ja: '検索結果なし',    zh: '无搜索结果' },
+  darkwebResultCount:  { ko: '건',                    en: 'results',                  ja: '件',              zh: '条' },
+  darkwebBreachSource: { ko: '출처: Have I Been Pwned API · 총', en: 'Source: Have I Been Pwned API · Total', ja: '出典: Have I Been Pwned API · 合計', zh: '来源: Have I Been Pwned API · 共' },
+  darkwebBreachUnit:   { ko: '건 유출 이력',           en: 'breach records',          ja: '件漏洩履歴',       zh: '条泄露记录' },
+  darkwebPersonUnit:   { ko: '명',                    en: 'persons',                 ja: '名',              zh: '人' },
+
+  // ── CorrelationPanel 추가 ────────────────────────────────────────────────
+  corrTitle:           { ko: '📊 국제 정세·경제 지표 ↔ 사이버 공격 상관관계', en: '📊 Economic Indicators ↔ Cyber Attack Correlation', ja: '📊 国際情勢・経済指標 ↔ サイバー攻撃相関', zh: '📊 国际局势·经济指标 ↔ 网络攻击相关性' },
+  corrSubtitle:        { ko: '최근 {days}일 · 피어슨 상관계수 분석', en: 'Last {days} days · Pearson correlation analysis', ja: '直近{days}日 · ピアソン相関係数分析', zh: '近{days}天 · 皮尔逊相关系数分析' },
+  corrAllAttacks:      { ko: '전체 공격',             en: 'All Attacks',            ja: '全体攻撃',        zh: '全部攻击' },
+  corrRansomware:      { ko: '🔴 랜섬웨어',           en: '🔴 Ransomware',           ja: '🔴 ランサムウェア', zh: '🔴 勒索软件' },
+  corrAPT:             { ko: '🟣 APT',                en: '🟣 APT',                  ja: '🟣 APT',          zh: '🟣 APT' },
+  corrVuln:            { ko: '🟠 취약점',             en: '🟠 Vulnerability',        ja: '🟠 脆弱性',       zh: '🟠 漏洞' },
+  corrPhishing:        { ko: '🟡 피싱',               en: '🟡 Phishing',             ja: '🟡 フィッシング', zh: '🟡 网络钓鱼' },
+  corrC2:              { ko: '🔵 C2/봇넷',            en: '🔵 C2/Botnet',            ja: '🔵 C2/ボットネット', zh: '🔵 C2/僵尸网络' },
+  corrSupplyChain:     { ko: '🟢 공급망',             en: '🟢 Supply Chain',         ja: '🟢 サプライチェーン', zh: '🟢 供应链' },
+  corrBTC:             { ko: 'BTC ↔ 공격',           en: 'BTC ↔ Attacks',          ja: 'BTC ↔ 攻撃',     zh: 'BTC ↔ 攻击' },
+  corrKRW:             { ko: 'USD/KRW ↔ 공격',       en: 'USD/KRW ↔ Attacks',      ja: 'USD/KRW ↔ 攻撃', zh: 'USD/KRW ↔ 攻击' },
+  corrAttackCount:     { ko: '공격 건수',             en: 'Attack Count',            ja: '攻撃件数',        zh: '攻击数量' },
+  corrAnalyzing:       { ko: '상관관계 분석 중...',    en: 'Analyzing correlation...', ja: '相関分析中...',   zh: '相关性分析中...' },
+  corrPositiveStrong:  { ko: '양(강)',                en: 'Pos. (Strong)',           ja: '正（強）',        zh: '正（强）' },
+  corrPositiveWeak:    { ko: '양(약)',                en: 'Pos. (Weak)',             ja: '正（弱）',        zh: '正（弱）' },
+  corrNegativeStrong:  { ko: '음(강)',                en: 'Neg. (Strong)',           ja: '負（強）',        zh: '负（强）' },
+  corrNegativeWeak:    { ko: '음(약)',                en: 'Neg. (Weak)',             ja: '負（弱）',        zh: '负（弱）' },
+  corrNone:            { ko: '무상관',               en: 'No correlation',          ja: '無相関',          zh: '无相关' },
+  corrInterpStrong:    {
+    ko: '{indicator}와 사이버 공격 간 {dir} 강한 상관관계 (r={r}) 확인 — 경제 불안정 시 공격 증가 패턴',
+    en: 'Strong {dir} correlation between {indicator} and cyber attacks (r={r}) — attacks spike during economic instability',
+    ja: '{indicator}とサイバー攻撃間に{dir}強い相関 (r={r}) 確認 — 経済不安定時に攻撃増加パターン',
+    zh: '{indicator}与网络攻击之间存在{dir}强相关 (r={r}) — 经济不稳定时攻击增加模式',
+  },
+  corrInterpWeak:      {
+    ko: '{indicator}와 사이버 공격 간 {dir} 약한 상관관계 (r={r}) — 복합 변수 분석 권장',
+    en: 'Weak {dir} correlation between {indicator} and attacks (r={r}) — multi-variable analysis recommended',
+    ja: '{indicator}とサイバー攻撃間に{dir}弱い相関 (r={r}) — 複合変数分析を推奨',
+    zh: '{indicator}与攻击之间存在{dir}弱相关 (r={r}) — 建议进行多变量分析',
+  },
+  corrInterpNone:      {
+    ko: '현 기간 내 경제 지표와 공격 건수 간 뚜렷한 상관관계 미확인 (r={r})',
+    en: 'No significant correlation found between economic indicators and attack counts (r={r})',
+    ja: '現期間内で経済指標と攻撃件数間に明確な相関は確認されず (r={r})',
+    zh: '当前期间内经济指标与攻击数量之间未发现显著相关性 (r={r})',
+  },
+  corrDirPositive:     { ko: '양(+)',               en: 'positive',                ja: '正(+)',           zh: '正(+)' },
+  corrDirNegative:     { ko: '음(-)',               en: 'negative',                ja: '負(-)',           zh: '负(-)' },
+  // ── 위협 유형 (DB 값 → 표시 번역) ──────────────────────────────────────────
+  ttMalware:       { ko: '악성코드/랜섬웨어',    en: 'Malware/Ransomware',           ja: 'マルウェア/ランサムウェア',   zh: '恶意软件/勒索软件' },
+  ttRansomware:    { ko: '랜섬웨어',             en: 'Ransomware',                   ja: 'ランサムウェア',             zh: '勒索软件' },
+  ttAPT:           { ko: 'APT/국가지원',          en: 'APT/State-Sponsored',          ja: 'APT/国家支援',               zh: 'APT/国家支持' },
+  ttPhishing:      { ko: '피싱/소셜엔지니어링',   en: 'Phishing/Social Engineering',  ja: 'フィッシング/ソーシャルエンジニアリング', zh: '钓鱼/社会工程' },
+  ttSupplyChain:   { ko: '공급망공격',            en: 'Supply Chain Attack',          ja: 'サプライチェーン攻撃',       zh: '供应链攻击' },
+  ttVuln:          { ko: '취약점/익스플로잇',     en: 'Vulnerability/Exploit',        ja: '脆弱性/エクスプロイト',      zh: '漏洞/利用' },
+  ttC2:            { ko: 'C2/봇넷',              en: 'C2/Botnet',                    ja: 'C2/ボットネット',            zh: 'C2/僵尸网络' },
+  ttDDoS:          { ko: 'DDoS/서비스거부',       en: 'DDoS/DoS',                     ja: 'DDoS/サービス拒否',          zh: 'DDoS/拒绝服务' },
+  ttOther:         { ko: '기타',                  en: 'Other',                        ja: 'その他',                     zh: '其他' },
+
+  // ── 국가명 (코드 → 표시 번역) ─────────────────────────────────────────────
+  countryKR: { ko: '한국',       en: 'South Korea',    ja: '韓国',           zh: '韩国' },
+  countryUS: { ko: '미국',       en: 'United States',  ja: '米国',           zh: '美国' },
+  countryCN: { ko: '중국',       en: 'China',          ja: '中国',           zh: '中国' },
+  countryRU: { ko: '러시아',     en: 'Russia',         ja: 'ロシア',         zh: '俄罗斯' },
+  countryJP: { ko: '일본',       en: 'Japan',          ja: '日本',           zh: '日本' },
+  countryDE: { ko: '독일',       en: 'Germany',        ja: 'ドイツ',         zh: '德国' },
+  countryGB: { ko: '영국',       en: 'United Kingdom', ja: 'イギリス',       zh: '英国' },
+  countryFR: { ko: '프랑스',     en: 'France',         ja: 'フランス',       zh: '法国' },
+  countryIR: { ko: '이란',       en: 'Iran',           ja: 'イラン',         zh: '伊朗' },
+  countryKP: { ko: '북한',       en: 'North Korea',    ja: '北朝鮮',         zh: '朝鲜' },
+  countryUA: { ko: '우크라이나', en: 'Ukraine',        ja: 'ウクライナ',     zh: '乌克兰' },
+  countryIN: { ko: '인도',       en: 'India',          ja: 'インド',         zh: '印度' },
+
+  // ── 소스 내부 표시 ───────────────────────────────────────────────────────
+  internalSource:  { ko: '내부',   en: 'Internal',    ja: '内部',   zh: '内部' },
+} as const;
+
+export type TKey = keyof typeof T;
+
+export function getT(lang: LangCode) {
+  return function t(key: TKey | string): string {
+    const entry = (T as Record<string, Record<LangCode, string>>)[key];
+    if (!entry) return String(key); // 알 수 없는 키는 키 자체를 반환 (크래시 방지)
+    return entry[lang] ?? entry['ko'] ?? String(key);
+  };
+}
+
+export default T;

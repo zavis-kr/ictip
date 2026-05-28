@@ -1,0 +1,179 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── 헤더 ── */
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0f172a;
+  border-radius: 14px;
+  padding: 18px 24px;
+  color: #fff;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.header-date {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.live-clock {
+  font-size: 32px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+  color: #38bdf8;
+}
+
+.header-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.last-update {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* refresh countdown bar */
+.refresh-bar-wrap {
+  width: 120px;
+  height: 3px;
+  background: #1e293b;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.refresh-bar {
+  height: 100%;
+  background: #38bdf8;
+  border-radius: 2px;
+  transition: width 1s linear;
+}
+
+/* ── live badge ── */
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+  letter-spacing: 0.5px;
+}
+
+.live-badge.connected {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.live-badge.disconnected {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 1.4s infinite;
+}
+
+/* ── KPI row ── */
+.kpi-row {
+  display: flex;
+  gap: 14px;
+}
+
+.stat-skeleton {
+  flex: 1;
+  min-width: 160px;
+  height: 110px;
+  background: linear-gradient(90deg, #0d1829 25%, #1e293b 50%, #0d1829 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 12px;
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+/* ── mid / bottom rows ── */
+.mid-left, .mid-right, .mid-econ {
+  min-height: 360px;
+}
+
+.bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* ── 공격 지도 + 위험 공격자 행 ── */
+.attack-row {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.attack-map-col {
+  min-height: 420px;
+}
+
+.attack-list-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 지정학 리스크 행 (전체 너비) ── */
+.intel-row {
+  display: block;
+}
+
+@media (max-width: 1100px) {
+  .mid-row { grid-template-columns: 3fr 2fr; }
+  .mid-econ { display: none; }
+}
+
+@media (max-width: 900px) {
+  .kpi-row      { flex-wrap: wrap; }
+  .mid-row,
+  .bottom-row,
+  .attack-row   { grid-template-columns: 1fr; }
+  .live-clock   { font-size: 20px; }
+}

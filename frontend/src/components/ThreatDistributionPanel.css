@@ -1,0 +1,43 @@
+.dist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dist-item {}
+
+.dist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.dist-type {
+  font-size: 13px;
+  color: #cbd5e1;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+}
+
+.dist-pct {
+  font-size: 14px;
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+.dist-bar-bg {
+  height: 8px;
+  background: #1e293b;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dist-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.8s ease;
+}

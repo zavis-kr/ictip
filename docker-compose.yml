@@ -1,0 +1,95 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ictip_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ictip}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ictip_secret}
+      POSTGRES_DB: ictip_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ictip_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ictip} -d ictip_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: ictip_redis
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    networks:
+      - ictip_net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ictip_backend
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-ictip}:${POSTGRES_PASSWORD:-ictip_secret}@postgres:5432/ictip_db
+      SYNC_DATABASE_URL: postgresql://${POSTGRES_USER:-ictip}:${POSTGRES_PASSWORD:-ictip_secret}@postgres:5432/ictip_db
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-super_secret_key_change_in_prod}
+      OTX_API_KEY: ${OTX_API_KEY:-}
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      FETCH_INTERVAL_MINUTES: ${FETCH_INTERVAL_MINUTES:-5}
+      STATS_UPDATE_INTERVAL_MINUTES: ${STATS_UPDATE_INTERVAL_MINUTES:-60}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ictip_net
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ictip_frontend
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/index.html:/app/index.html
+      - ./frontend/vite.config.ts:/app/vite.config.ts
+    networks:
+      - ictip_net
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  ictip_net:
+    driver: bridge

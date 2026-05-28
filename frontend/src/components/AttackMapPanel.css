@@ -1,0 +1,112 @@
+.attack-map-panel {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 420px;
+}
+
+.amp-header { display: flex; align-items: center; justify-content: space-between; }
+.amp-title-row { display: flex; align-items: center; gap: 10px; }
+.amp-icon  { font-size: 18px; }
+.amp-title { font-size: 17px; font-weight: 700; color: #e2e8f0; letter-spacing: 0.3px; }
+
+.amp-total {
+  font-size: 13px;
+  color: #ef4444;
+  font-weight: 600;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.25);
+  padding: 3px 12px;
+  border-radius: 20px;
+}
+
+.amp-map-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 260px;
+  background: #060d1a;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.amp-tooltip {
+  position: fixed;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #e2e8f0;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 9999;
+  min-width: 160px;
+  max-width: 240px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.amp-tt-country  { font-size: 14px; font-weight: 700; color: #f1f5f9; margin-bottom: 4px; }
+.amp-tt-attacks  { font-size: 13px; color: #ef4444; font-weight: 600; }
+.amp-tt-divider  { height: 1px; background: #334155; margin: 8px 0; }
+
+.amp-tt-risk-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.amp-tt-level    { font-size: 12px; font-weight: 700; }
+.amp-tt-score    { font-size: 12px; color: #94a3b8; flex: 1; }
+.amp-tt-trend    { font-size: 12px; color: #64748b; }
+
+.amp-tt-factors  { display: flex; flex-wrap: wrap; gap: 4px; }
+.amp-tt-factor {
+  font-size: 11px;
+  color: #94a3b8;
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.amp-tt-partner { font-size: 12px; color: #60a5fa; font-weight: 600; margin-bottom: 2px; }
+
+.amp-bottom  { display: flex; flex-direction: column; gap: 8px; }
+.amp-legend  { display: flex; align-items: center; }
+
+.amp-legend-items {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.amp-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.amp-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.amp-top-list { display: flex; flex-direction: column; gap: 5px; }
+
+.amp-top-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  background: #0d1b2e;
+  font-size: 13px;
+}
+
+.amp-rank  { color: #475569; font-weight: 700; width: 20px; flex-shrink: 0; }
+.amp-cc    { font-size: 12px; font-weight: 700; color: #94a3b8; background: #1e293b; padding: 1px 6px; border-radius: 3px; font-family: monospace; flex-shrink: 0; }
+.amp-cname { color: #cbd5e1; flex: 1; }
+.amp-risk-badge { font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 3px; background: rgba(0,0,0,0.2); }
+.amp-cnt   { color: #ef4444; font-weight: 700; font-size: 13px; font-family: monospace; }

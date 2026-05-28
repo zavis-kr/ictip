@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>ICTIP 시스템 아키텍처</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: #090d18;
+  font-family: 'Segoe UI', 'Noto Sans KR', sans-serif;
+  color: #fff;
+  padding: 36px 44px 44px;
+}
+
+/* ── 헤더 ── */
+.header { text-align:center; margin-bottom:32px; }
+.header .title { font-size:13px; color:rgba(255,255,255,0.35); letter-spacing:1px; margin-bottom:6px; }
+.header h1 { font-size:26px; font-weight:900; color:#00c8ff; letter-spacing:3px; margin-bottom:6px; }
+.header .subtitle { font-size:12px; color:rgba(255,255,255,0.4); }
+.header .paper { display:inline-block; margin-top:10px; background:rgba(0,200,255,0.08); border:1px solid rgba(0,200,255,0.25); border-radius:20px; padding:5px 16px; font-size:11px; color:rgba(0,200,255,0.7); letter-spacing:0.5px; }
+
+/* ── 메인 플로우 ── */
+.flow {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+  margin-bottom: 16px;
+}
+
+/* ── 플로우 화살표 ── */
+.flow-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  gap: 4px;
+}
+.flow-arrow .arr { font-size:22px; color:rgba(0,200,255,0.5); }
+.flow-arrow .arr-label { font-size:9px; color:rgba(255,255,255,0.25); letter-spacing:0.5px; text-align:center; white-space:nowrap; transform:rotate(0deg); }
+
+/* ── 레이어 박스 ── */
+.layer {
+  flex:1;
+  border-radius:16px;
+  border:1px solid;
+  padding:16px 18px;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.layer-num {
+  position:absolute;
+  top:-10px; left:16px;
+  font-size:10px; font-weight:800;
+  padding:2px 10px; border-radius:10px;
+}
+.layer-title {
+  font-size:13px; font-weight:800;
+  display:flex; align-items:center; gap:7px;
+  margin-top:4px;
+}
+.layer-icon { font-size:17px; }
+
+/* ── 서브카드 ── */
+.sub { border-radius:10px; padding:10px 12px; border:1px solid; margin-top:2px; }
+.sub-title { font-size:11px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:5px; }
+.tags { display:flex; flex-wrap:wrap; gap:5px; }
+.tag { font-size:10px; padding:2px 9px; border-radius:12px; font-weight:600; white-space:nowrap; }
+
+/* ── 색상 테마 ── */
+/* 레드 - 수집 */
+.l-red { background:rgba(220,50,50,0.08); border-color:rgba(220,50,50,0.3); }
+.l-red .layer-num { background:rgba(220,50,50,0.3); color:#ff8080; }
+.l-red .layer-title { color:#ff7070; }
+.l-red .sub { background:rgba(220,50,50,0.07); border-color:rgba(220,50,50,0.2); }
+.l-red .sub-title { color:#ff9090; }
+.l-red .tag { background:rgba(220,50,50,0.18); color:#ffaaaa; border:1px solid rgba(220,50,50,0.3); }
+
+/* 그린 - 저장 */
+.l-green { background:rgba(0,180,80,0.08); border-color:rgba(0,180,80,0.3); }
+.l-green .layer-num { background:rgba(0,180,80,0.25); color:#60e090; }
+.l-green .layer-title { color:#40e080; }
+.l-green .sub { background:rgba(0,180,80,0.07); border-color:rgba(0,180,80,0.2); }
+.l-green .sub-title { color:#50e888; }
+.l-green .tag { background:rgba(0,180,80,0.18); color:#80ffb0; border:1px solid rgba(0,180,80,0.3); }
+
+/* 퍼플 - 분석 */
+.l-purple { background:rgba(130,60,240,0.1); border-color:rgba(130,60,240,0.35); }
+.l-purple .layer-num { background:rgba(130,60,240,0.3); color:#c090ff; }
+.l-purple .layer-title { color:#b080ff; }
+.l-purple .sub { background:rgba(130,60,240,0.08); border-color:rgba(130,60,240,0.25); }
+.l-purple .sub-title { color:#c090ff; }
+.l-purple .tag { background:rgba(130,60,240,0.2); color:#d4aaff; border:1px solid rgba(130,60,240,0.3); }
+
+/* 오렌지 - 시각화 */
+.l-orange { background:rgba(230,120,0,0.08); border-color:rgba(230,120,0,0.3); }
+.l-orange .layer-num { background:rgba(230,120,0,0.25); color:#ffb060; }
+.l-orange .layer-title { color:#ffa040; }
+.l-orange .sub { background:rgba(230,120,0,0.07); border-color:rgba(230,120,0,0.2); }
+.l-orange .sub-title { color:#ffb050; }
+.l-orange .tag { background:rgba(230,120,0,0.18); color:#ffd090; border:1px solid rgba(230,120,0,0.3); }
+
+/* 시안 - 공유 */
+.l-cyan { background:rgba(0,180,220,0.08); border-color:rgba(0,180,220,0.3); }
+.l-cyan .layer-num { background:rgba(0,180,220,0.25); color:#60d8ff; }
+.l-cyan .layer-title { color:#40d0ff; }
+.l-cyan .sub { background:rgba(0,180,220,0.07); border-color:rgba(0,180,220,0.2); }
+.l-cyan .sub-title { color:#60e0ff; }
+.l-cyan .tag { background:rgba(0,180,220,0.18); color:#90eaff; border:1px solid rgba(0,180,220,0.3); }
+
+/* 블루 - 보안 */
+.l-blue { background:rgba(0,80,220,0.1); border-color:rgba(0,80,220,0.35); }
+.l-blue .layer-num { background:rgba(0,80,220,0.3); color:#80b0ff; }
+.l-blue .layer-title { color:#6090ff; }
+.l-blue .sub { background:rgba(0,80,220,0.08); border-color:rgba(0,80,220,0.25); }
+.l-blue .sub-title { color:#80b0ff; }
+.l-blue .tag { background:rgba(0,80,220,0.2); color:#aaccff; border:1px solid rgba(0,80,220,0.3); }
+
+/* ── 국제정세 사이드 배너 ── */
+.context-banner {
+  background:rgba(255,180,0,0.07);
+  border:1px solid rgba(255,180,0,0.25);
+  border-radius:12px;
+  padding:12px 16px;
+  margin-bottom:16px;
+  display:flex; align-items:center; gap:16px;
+}
+.context-banner .cb-title { font-size:12px; font-weight:800; color:#ffcc50; white-space:nowrap; }
+.context-banner .cb-items { display:flex; flex-wrap:wrap; gap:6px; }
+.context-banner .cb-tag { font-size:10px; padding:3px 10px; border-radius:12px; background:rgba(255,180,0,0.15); color:#ffe080; border:1px solid rgba(255,180,0,0.3); font-weight:600; }
+
+/* ── 구분선 화살표 ── */
+.flow-sep {
+  text-align:center; margin: 8px 0;
+  font-size:11px; color:rgba(255,255,255,0.2);
+  display:flex; align-items:center; gap:10px;
+}
+.flow-sep .sep-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(0,200,255,0.2),transparent); }
+.flow-sep .sep-txt { font-size:19px; color:rgba(0,200,255,0.4); }
+
+/* ── 하단 인프라 ── */
+.infra {
+  display:flex; gap:10px; margin-top:4px; flex-wrap:wrap;
+}
+.infra-chip {
+  flex:1; min-width:140px;
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+  border-radius:10px; padding:9px 14px;
+  display:flex; align-items:center; gap:8px;
+  font-size:11px; font-weight:600; color:rgba(255,255,255,0.5);
+}
+.infra-chip span { font-size:15px; }
+
+/* ── 차별점 배지 ── */
+.diff-badge {
+  display:inline-block;
+  background:linear-gradient(135deg,rgba(255,180,0,0.2),rgba(255,80,0,0.2));
+  border:1px solid rgba(255,150,0,0.4);
+  color:#ffcc70; font-size:9px; font-weight:800;
+  padding:1px 7px; border-radius:8px; margin-left:6px;
+  vertical-align:middle;
+}
+
+/* ── 범례 ── */
+.legend { display:flex; gap:18px; justify-content:center; margin-top:20px; flex-wrap:wrap; }
+.legend-item { display:flex; align-items:center; gap:5px; font-size:10px; color:rgba(255,255,255,0.4); }
+.legend-dot { width:9px; height:9px; border-radius:50%; }
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div class="header">
+  <div class="title">한국융합보안학회 2026년 하계학술대회</div>
+  <h1>ICTIP 시스템 아키텍처</h1>
+  <div class="subtitle">국제 사이버 위협 인텔리전스 플랫폼 (International Cyber Threat Intelligence Platform)</div>
+  <div class="paper">📄 국제 정세 연계 상황 인식 기반 사이버 위협 인텔리전스 분석 프레임워크 구현</div>
+</div>
+
+<!-- 국제 정세 & 경제 지표 연계 배너 (논문 핵심 차별점) -->
+<div class="context-banner">
+  <div class="cb-title">🌍 국제 정세 &amp; 경제 지표 연계 <span class="diff-badge">논문 핵심 차별점</span></div>
+  <div class="cb-items">
+    <span class="cb-tag">환율 데이터 (Frankfurter API)</span>
+    <span class="cb-tag">가상자산 가격 (CoinGecko API)</span>
+    <span class="cb-tag">지정학적 리스크 스코어</span>
+    <span class="cb-tag">국가별 위협 상관관계 분석</span>
+    <span class="cb-tag">공격 증가 ↔ 경제 불안정 패턴</span>
+  </div>
+</div>
+
+<!-- ① ~ ⑤ 플로우 -->
+<div class="flow">
+
+  <!-- ① 데이터 수집 -->
+  <div class="layer l-red">
+    <div class="layer-num">① 데이터 수집</div>
+    <div class="layer-title"><span class="layer-icon">🔍</span> 공격 정보 수집</div>
+
+    <div class="sub">
+      <div class="sub-title">🌐 위협 인텔리전스 피드 (8개)</div>
+      <div class="tags">
+        <span class="tag">ThreatFox</span>
+        <span class="tag">URLhaus</span>
+        <span class="tag">CISA KEV</span>
+        <span class="tag">NVD CVE</span>
+        <span class="tag">KISA 보호나라</span>
+        <span class="tag">OTX AlienVault</span>
+        <span class="tag">Feodo Tracker</span>
+        <span class="tag">MalwareBazaar</span>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">⏱ 수집 주기</div>
+      <div class="tags">
+        <span class="tag">5분 자동 수집</span>
+        <span class="tag">APScheduler</span>
+        <span class="tag">중복 제거</span>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">📥 수집 IOC 유형</div>
+      <div class="tags">
+        <span class="tag">IP</span>
+        <span class="tag">Domain</span>
+        <span class="tag">URL</span>
+        <span class="tag">MD5/SHA256</span>
+        <span class="tag">CVE</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-arrow"><div class="arr">→</div><div class="arr-label">HTTP<br>REST</div></div>
+
+  <!-- ② 저장 -->
+  <div class="layer l-green">
+    <div class="layer-num">② 데이터베이스</div>
+    <div class="layer-title"><span class="layer-icon">🗄</span> 저장 계층</div>
+
+    <div class="sub">
+      <div class="sub-title">🐘 PostgreSQL 15</div>
+      <div class="tags">
+        <span class="tag">threats</span>
+        <span class="tag">threat_feeds</span>
+        <span class="tag">users</span>
+        <span class="tag">audit_logs</span>
+        <span class="tag">ai_analyses</span>
+        <span class="tag">agencies</span>
+        <span class="tag">threat_shares</span>
+        <span class="tag">daily_stats</span>
+        <span class="tag">country_stats</span>
+        <span class="tag">country_shares</span>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">⚡ Redis 7</div>
+      <div class="tags">
+        <span class="tag">캐시</span>
+        <span class="tag">Health Check</span>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">🔗 ORM</div>
+      <div class="tags">
+        <span class="tag">SQLAlchemy (비동기)</span>
+        <span class="tag">AsyncSession</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-arrow"><div class="arr">→</div><div class="arr-label">비동기<br>쿼리</div></div>
+
+  <!-- ③ 분석 (논문 핵심) -->
+  <div class="layer l-purple">
+    <div class="layer-num">③ 분석 모듈 <span class="diff-badge">LLM 핵심</span></div>
+    <div class="layer-title"><span class="layer-icon">🧠</span> AI 기반 위협 분석</div>
+
+    <div class="sub">
+      <div class="sub-title">🤖 Claude Opus 4.6 (LLM)</div>
+      <div class="tags">
+        <span class="tag">리스크 스코어 (0~100)</span>
+        <span class="tag">공격 유형 분류</span>
+        <span class="tag">공격 벡터 분석</span>
+        <span class="tag">대응 권고 생성</span>
+        <span class="tag">IOC 분석</span>
+        <span class="tag">위협 행위자 귀속</span>
+        <span class="tag">신뢰도 산출</span>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">🎯 MITRE ATT&CK 매핑</div>
+      <div class="tags">
+        <span class="tag">전술(Tactic) ID</span>
+        <span class="tag">기법(Technique) ID</span>
+        <span class="tag">자동 분류기</span>
+        <span class="tag">행위자 귀속</span>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">📊 상관관계 분석</div>
+      <div class="tags">
+        <span class="tag">국제정세 ↔ 공격패턴</span>
+        <span class="tag">심각도 자동 분류</span>
+        <span class="tag">1시간 통계 집계</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-arrow"><div class="arr">→</div><div class="arr-label">REST<br>WS</div></div>
+
+  <!-- ④ 시각화 -->
+  <div class="layer l-orange">
+    <div class="layer-num">④ 시각화 <span class="diff-badge">상황 인식</span></div>
+    <div class="layer-title"><span class="layer-icon">📊</span> 확장된 시각화</div>
+
+    <div class="sub">
+      <div class="sub-title">🗺 실시간 공격 지도</div>
+      <div class="tags">
+        <span class="tag">국가별 공격 발원지</span>
+        <span class="tag">위험 IP 히트맵</span>
+        <span class="tag">Top 10 공격자</span>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">🌍 국제 정세 연계 대시보드</div>
+      <div class="tags">
+        <span class="tag">지정학적 리스크</span>
+        <span class="tag">경제 지표</span>
+        <span class="tag">공격 증가 상관분석</span>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">📈 플랫폼 지표</div>
+      <div class="tags">
+        <span class="tag">실시간 KPI</span>
+        <span class="tag">위협 분포</span>
+        <span class="tag">AI 성능 지표</span>
+        <span class="tag">WebSocket 갱신</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-arrow"><div class="arr">→</div><div class="arr-label">STIX<br>TAXII</div></div>
+
+  <!-- ⑤ 공유 -->
+  <div class="layer l-cyan">
+    <div class="layer-num">⑤ 정보 공유</div>
+    <div class="layer-title"><span class="layer-icon">🌐</span> 기관 간 공유</div>
+
+    <div class="sub">
+      <div class="sub-title">📦 STIX 2.1 / TAXII 2.1</div>
+      <div class="tags">
+        <span class="tag">표준 번들 생성</span>
+        <span class="tag">Indicator 객체</span>
+        <span class="tag">Kill Chain 매핑</span>
+        <span class="tag">컬렉션 API</span>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">🏛 참여 기관 공유</div>
+      <div class="tags">
+        <span class="tag">KISA · CISA · NCSC</span>
+        <span class="tag">다중 기관 선택</span>
+        <span class="tag">공유 이력 추적</span>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">🔐 보안 접근 제어</div>
+      <div class="tags">
+        <span class="tag">JWT (HS256)</span>
+        <span class="tag">RBAC</span>
+        <span class="tag">Admin·Analyst·Viewer</span>
+        <span class="tag">감사 로그</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 플로우 하단 구분 -->
+<div class="flow-sep">
+  <div class="sep-line"></div>
+  <div class="sep-txt">⑥</div>
+  <div style="font-size:11px;color:rgba(255,255,255,0.3);padding:0 6px;">인프라 · 배포</div>
+  <div class="sep-line"></div>
+</div>
+
+<!-- ⑥ 인프라 -->
+<div class="infra">
+  <div class="infra-chip"><span>🐳</span> Docker Compose</div>
+  <div class="infra-chip"><span>⚡</span> FastAPI · Python 3.11</div>
+  <div class="infra-chip"><span>⚛</span> React 18 · TypeScript · Vite</div>
+  <div class="infra-chip"><span>🌐</span> Nginx (리버스 프록시)</div>
+  <div class="infra-chip"><span>🔒</span> CORS · HTTPS Ready</div>
+  <div class="infra-chip"><span>❤</span> Health Check · Auto Restart</div>
+</div>
+
+<!-- 범례 -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#ff7070"></div> 데이터 수집</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#40e080"></div> 저장 계층</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#b080ff"></div> AI 분석 (LLM)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ffa040"></div> 시각화 (상황 인식)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#40d0ff"></div> STIX/TAXII 공유</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ffcc50"></div> 국제 정세 연계 (핵심 차별점)</div>
+</div>
+
+</body>
+</html>
